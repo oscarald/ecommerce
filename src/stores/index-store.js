@@ -10,9 +10,9 @@ export const useIndexStore = defineStore("inicio", {
     async getIndexProducts() {
       try {
         this.loading = true;
-        const prod = await api.get("http://localhost:3000/products");
-        this.products = prod.data;
-        console.log(prod.data)
+        const prod = await api.get("http://localhost:3001/products");
+        this.products = prod.data.docs;
+        console.log(prod.data.docs)
         this.loading = false;
       } catch (error) {
         console.log(error);
