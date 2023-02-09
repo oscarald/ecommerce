@@ -9,11 +9,74 @@ const search = ref("");
 
 const onRequest = (page) => {
   //console.log(page)
-  shopStore.getProducts(page);
+  switch (shopStore.filter) {
+    case "all":
+      shopStore.getProducts(page);
+      break;
+    case "cat":
+      shopStore.filterByCategory(page);
+      break;
+    case "rate":
+      shopStore.filterByRate(page);
+      break;
+    case "priceAsc":
+      shopStore.filterByPrice(page, "asc");
+      break;
+    case "priceDesc":
+      shopStore.filterByPrice(page, "desc");
+      break;
+    case "date":
+      shopStore.filterByDate(page);
+      break;
+    case "between":
+      shopStore.filterBetweenPrice(page,price.value.min,price.value.max);
+      break;
+    case "search":
+      shopStore.searchProduct(page,search.value);
+      break;
+  }
 };
 
-const filterByCategory = (name) => {
-  console.log(name)
+const cleanFilter = () => {
+  shopStore.changeFilter("all");
+  shopStore.getProducts();
+};
+
+const filterByCategory = (id) => {
+  shopStore.saveCategory(id);
+
+  shopStore.changeFilter("cat");
+  shopStore.filterByCategory();
+};
+
+const orderByRate = () => {
+  shopStore.changeFilter("rate");
+  shopStore.filterByRate();
+};
+
+const orderByPrice = (price) => {
+  if (price == "asc") {
+    shopStore.changeFilter("priceAsc");
+    shopStore.filterByPrice(1, price);
+  } else {
+    shopStore.changeFilter("priceDesc");
+    shopStore.filterByPrice(1, price);
+  }
+};
+
+const orderByDate = () => {
+  shopStore.changeFilter("date");
+  shopStore.filterByDate();
+};
+
+const BetweenPrice = (min,max) => {
+  shopStore.changeFilter("between");
+  shopStore.filterBetweenPrice(1,min,max);
+}
+
+const filterBySearch = (search) => {
+  shopStore.changeFilter("search");
+  shopStore.searchProduct(1, search);
 }
 
 onMounted(() => {
@@ -29,24 +92,38 @@ onMounted(() => {
         <p class="text-h6">SELECCIONE EL PRECIO</p>
 
         <div style="max-width: 10em" class="">
-          <q-range v-model="price" :min="10" :max="150" label />
+          <q-range v-model="price" :min="1" :max="100" label />
           <div class="text-subtitle1 text-bold">
             Precio: {{ price.min }} - {{ price.max }} Bs.
           </div>
-          <q-btn color="primary" label="Filtrar" />
+          <q-btn color="primary" label="Filtrar" @click="BetweenPrice(price.min,price.max)"/>
         </div>
       </div>
       <div class="bg-blue-grey-1 q-pa-xl q-mt-md" style="width: 20rem">
         <p class="text-h6">CATEGORÍAS</p>
-        <div class="column items-start" v-for="cat in shopStore.categories" :key="cat._id">
+
+        <div class="column items-start">
+          <q-btn
+            flat
+            color="accent"
+            label="Todas las Categorías"
+            icon="eva-chevron-right-outline"
+            @click="cleanFilter"
+          />
+        </div>
+
+        <div
+          class="column items-start"
+          v-for="cat in shopStore.categories"
+          :key="cat._id"
+        >
           <q-btn
             flat
             color="accent"
             :label="cat.name"
             icon="eva-chevron-right-outline"
-            @click="filterByCategory(cat.name)"
+            @click="filterByCategory(cat._id, shopStore.actualPage)"
           />
-
         </div>
       </div>
     </div>
@@ -55,7 +132,7 @@ onMounted(() => {
         <div style="max-width: 20rem" class="q-mt-md bg-blue-grey-1 q-px-md">
           <q-input v-model="search" label="Buscar Producto">
             <template v-slot:after>
-              <q-btn round flat icon="eva-search-outline" />
+              <q-btn round flat icon="eva-search-outline" @click="filterBySearch(search)"/>
             </template>
           </q-input>
         </div>
@@ -64,13 +141,13 @@ onMounted(() => {
             <div class="text-h6 q-pl-xl">Ordenar por:</div>
             <q-btn-dropdown color="primary" label="Ordenar">
               <q-list>
-                <q-item clickable v-close-popup @click="onItemClick">
+                <q-item clickable v-close-popup @click="orderByRate">
                   <q-item-section>
                     <q-item-label>Ordenar por puntuación</q-item-label>
                   </q-item-section>
                 </q-item>
 
-                <q-item clickable v-close-popup @click="onItemClick">
+                <q-item clickable v-close-popup @click="orderByPrice('asc')">
                   <q-item-section>
                     <q-item-label
                       >Ordenar por precio: Menor a mayor</q-item-label
@@ -78,7 +155,7 @@ onMounted(() => {
                   </q-item-section>
                 </q-item>
 
-                <q-item clickable v-close-popup @click="onItemClick">
+                <q-item clickable v-close-popup @click="orderByPrice('desc')">
                   <q-item-section>
                     <q-item-label
                       >Ordenar por precio: Mayor a menor</q-item-label
@@ -86,7 +163,7 @@ onMounted(() => {
                   </q-item-section>
                 </q-item>
 
-                <q-item clickable v-close-popup @click="onItemClick">
+                <q-item clickable v-close-popup @click="orderByDate">
                   <q-item-section>
                     <q-item-label>Ordenar por últimos productos</q-item-label>
                   </q-item-section>
@@ -97,15 +174,21 @@ onMounted(() => {
         </div>
       </div>
       <div class="row">
-
         <div
+          v-if="shopStore.products.length > 0"
           v-for="prod in shopStore.products"
           :key="prod.id"
           class="col-12 col-sm-6 col-md-4 q-pa-lg flex justify-center"
         >
           <Product :prod="prod" />
         </div>
-        <div class="q-pa-lg flex flex-center col-12">
+        <div v-else class="col-12 flex justify-center">
+          <p class="text-h3">No hay Productos</p>
+        </div>
+        <div
+          class="q-pa-lg flex flex-center col-12"
+          v-if="shopStore.products.length > 0"
+        >
           <q-pagination
             v-model="shopStore.actualPage"
             :max="shopStore.totalPages"
