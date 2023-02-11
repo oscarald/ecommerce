@@ -15,7 +15,7 @@
         <q-route-tab to="/login" label="Login" />
         <q-btn  color="secondary" icon="eva-heart-outline" @click="toggleLeftDrawer" />
         <q-btn  class="q-ml-md" color="secondary" icon="eva-shopping-cart-outline" @click="toggleRightDrawer">
-          <q-badge color="red" floating>4</q-badge>
+          <q-badge v-if="shoppingCartStore.cart.length !== 0" color="red" floating>{{ shoppingCartStore.cart.length }}</q-badge>
         </q-btn>
       </q-tabs>
     </q-header>
@@ -49,6 +49,8 @@
 <script>
 import { ref } from "vue";
 import ShoppingCart from "src/components/ShoppingCart.vue";
+import { useShoppingStore } from "src/stores/shopping-cart-store";
+const shoppingCartStore = useShoppingStore()
 
 export default {
   components: {
@@ -68,6 +70,7 @@ export default {
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
       },
+      shoppingCartStore
     };
   },
 };

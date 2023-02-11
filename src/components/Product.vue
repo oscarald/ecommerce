@@ -1,5 +1,9 @@
 <script setup>
+import { useQuasar } from 'quasar'
 import { ref,defineProps } from 'vue';
+import { useShoppingStore } from "src/stores/shopping-cart-store";
+const shoppingCartStore = useShoppingStore()
+const $q = useQuasar()
 
 const props = defineProps({
     prod:{
@@ -8,6 +12,13 @@ const props = defineProps({
 })
 
 const stars = ref(5)
+const showNotif = () => {
+        $q.notify({
+          message: 'Producto añadido correctamente',
+          color: 'primary',
+          timeout: 1500
+        })
+      }
 </script>
 
 <template>
@@ -31,7 +42,7 @@ const stars = ref(5)
         <div class="text-h6 text-bold">
           {{ props.prod.price }} Bs.
         </div>
-        <q-btn color="primary" icon="eva-shopping-cart-outline" />
+        <q-btn color="primary" icon="eva-shopping-cart-outline" @click="shoppingCartStore.addShoppingCart(props.prod), showNotif()"/>
 
       </q-card-section>
 

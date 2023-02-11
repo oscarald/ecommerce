@@ -1,75 +1,68 @@
-<script setup></script>
+<script setup>
+import { useShoppingStore } from "src/stores/shopping-cart-store";
+const shoppingCartStore = useShoppingStore()
+
+</script>
 
 <template>
-  <div>Carrito de compras</div>
-  <div class="row q-mx-md">
-    <div class="col-3">
-      <q-img
-        src="https://res.cloudinary.com/de8brtp2o/image/upload/v1674530012/siipi/frapusii_l8m5ax.jpg"
-      />
-    </div>
-    <div class="col-6 q-mx-xs q-pl-xs">
-      <div><q-btn no-caps label="Descripcion de producto" /></div>
-      <div>
-        <span>Cantidad</span>
-        <q-btn icon="eva-arrow-ios-upward-outline" size="sm" padding="none" />
-        <span>1</span>
-        <q-btn icon="eva-arrow-ios-downward-outline" size="sm" padding="none" />
-        <q-btn
-          icon="eva-trash-2-outline"
-          padding="none"
-          label="Quitar producto"
-          no-caps
+  <div class="text-h5 text-center q-py-md text-bold">Carrito de compras</div>
+  <q-separator />
+  <div style="height: 80%; overflow-x: hidden; overflow-y: scroll">
+    <div class="text-h5 text-center text-bold" v-if="shoppingCartStore.cart.length == 0">No hay productos en el Carrito.</div>
+    <div class="row q-ma-md" v-for="product in shoppingCartStore.cart" v-else>
+      <div class="col-3 flex flex-center">
+        <q-img
+          :src="product.imgUrl"
         />
       </div>
+      <div class="col-6 q-mx-xs q-pl-xs">
+        <div><q-btn no-caps :label="product.name" flat /></div>
+        <div>
+          <div class="q-py-sm text-center">
+            <span class="q-pr-sm text-subtitle1">Cantidad</span>
+            <q-btn
+              icon="eva-arrow-ios-upward-outline"
+              size="md"
+              padding="none"
+              @click="shoppingCartStore.incrementQuantity(product)"
+            />
+            <span class="q-px-sm text-subtitle1 text-weight-medium">{{ product.quantity }}</span>
+            <q-btn
+              icon="eva-arrow-ios-downward-outline"
+              size="md"
+              padding="none"
+              :disable="product.quantity == 1"
+              @click="shoppingCartStore.decrementQuantity(product)"
+            />
+          </div>
+
+          <q-btn
+            padding="5px 10px"
+            icon="eva-trash-2-outline"
+            label="Quitar producto"
+            no-caps
+            outline
+            @click="shoppingCartStore.deleteProduct(product)"
+          />
+        </div>
+      </div>
+      <div class="col flex flex-center text-subtitle1 text-weight-medium">
+        {{ product.price*product.quantity }} Bs.
+      </div>
+
     </div>
-    <div class="col flex flex-center">10 Bs.</div>
   </div>
-  <div class="row q-mx-md">
-    <div class="col-3">
-      <q-img
-        src="https://res.cloudinary.com/de8brtp2o/image/upload/v1674530012/siipi/frapusii_l8m5ax.jpg"
+  <q-separator />
+  <div class="flex items-end q-pa-md column">
+    <div class="text-h4">Total {{ shoppingCartStore.total }} Bs.</div>
+    <div>
+      <q-btn
+        icon-right="eva-shopping-bag-outline"
+        size="md"
+        color="primary"
+        label="Ir a Pagar"
       />
     </div>
-    <div class="col-6 q-mx-xs q-pl-xs">
-      <div><q-btn no-caps label="Descripcion de producto" /></div>
-      <div>
-        <span>Cantidad</span>
-        <q-btn icon="eva-arrow-ios-upward-outline" size="sm" padding="none" />
-        <span>1</span>
-        <q-btn icon="eva-arrow-ios-downward-outline" size="sm" padding="none" />
-        <q-btn
-          icon="eva-trash-2-outline"
-          padding="none"
-          label="Quitar producto"
-          no-caps
-        />
-      </div>
-    </div>
-    <div class="col flex flex-center">10 Bs.</div>
-  </div>
-  <div class="row q-mx-md">
-    <div class="col-3">
-      <q-img
-        src="https://res.cloudinary.com/de8brtp2o/image/upload/v1674530012/siipi/frapusii_l8m5ax.jpg"
-      />
-    </div>
-    <div class="col-6 q-mx-xs q-pl-xs">
-      <div><q-btn no-caps label="Descripcion de producto" /></div>
-      <div>
-        <span>Cantidad</span>
-        <q-btn icon="eva-arrow-ios-upward-outline" size="sm" padding="none" />
-        <span>1</span>
-        <q-btn icon="eva-arrow-ios-downward-outline" size="sm" padding="none" />
-        <q-btn
-          icon="eva-trash-2-outline"
-          padding="none"
-          label="Quitar producto"
-          no-caps
-        />
-      </div>
-    </div>
-    <div class="col flex flex-center">10 Bs.</div>
   </div>
 </template>
 
