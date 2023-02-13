@@ -9,8 +9,8 @@ import Button from "src/components/Button.vue"
     <q-img :src="ima" style="max-height: 600px;">
           <div class="absolute-full flex items-center justify-around backcolor">
             <div class="flex column">
-              <div class="text-h3 ">Bienvenidos a SIIPI</div>
-              <div class="text-h5  q-my-xl">Comer saludable es Delicioso !</div>
+              <div class="text-h2 " style="font-family: 'Caveat';">Bienvenidos a SIIPI</div>
+              <div class="text-h4  q-my-xl" style="font-family: 'Caveat';">Comer saludable es Delicioso !</div>
               <Button/>
 
             </div>

@@ -6,11 +6,12 @@
       style="min-height: 100px"
     >
       <q-item clickable to="/">
-        <q-item-section avatar>
-          <q-avatar size="75px">
-            <img src="src/assets/logo-sii-pi-verde.svg" />
+        <q-item-section >
+          <q-avatar rounded size="100px" style="background: rgba(255,255,255,0.6);">
+            <q-img src="src/assets/logo-sii-pi-verde.svg" style="max-width: 95%; max-height: 50px;" />
           </q-avatar>
         </q-item-section>
+
       </q-item>
       <q-tabs>
         <q-route-tab to="/" label="Home" />
@@ -40,11 +41,11 @@
           </q-list>
         </q-btn-dropdown>
 
-        <q-btn
+        <!-- <q-btn
           color="secondary"
           icon="eva-heart-outline"
           @click="toggleLeftDrawer"
-        />
+        /> -->
         <q-btn
           class="q-ml-md"
           color="secondary"
@@ -80,15 +81,8 @@
       <router-view />
     </q-page-container>
 
-    <q-footer reveal elevated class="bg-grey-8 text-white">
-      <q-toolbar>
-        <q-toolbar-title>
-          <q-avatar>
-            <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
-          </q-avatar>
-          <div>Title</div>
-        </q-toolbar-title>
-      </q-toolbar>
+    <q-footer reveal elevated class="bg-blue-grey-10 text-white">
+      <Footer />
     </q-footer>
   </q-layout>
 </template>
@@ -96,14 +90,17 @@
 <script>
 import { ref } from "vue";
 import ShoppingCart from "src/components/ShoppingCart.vue";
+import Footer from "src/components/Footer.vue"
 import { useShoppingStore } from "src/stores/shopping-cart-store";
 import { useAuthStore } from "src/stores/auth-store";
+import logo from "src/assets/logo-sii-pi-verde.svg";
 const shoppingCartStore = useShoppingStore();
 const authStore = useAuthStore()
 
 export default {
   components: {
     ShoppingCart,
+    Footer
   },
   setup() {
     const leftDrawerOpen = ref(false);
@@ -120,7 +117,9 @@ export default {
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },
       shoppingCartStore,
-      authStore
+      authStore,
+      Footer,
+
     };
   },
 };

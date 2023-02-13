@@ -84,6 +84,7 @@ const errorNotify = (err) => {
                 type="email"
                 label="Correo Electrónico"
                 @keyup="clean"
+                :rules="[val => !!val || 'Este campo es obligatorio']"
               >
                 <template v-slot:prepend>
                   <q-icon name="email" />
@@ -95,6 +96,7 @@ const errorNotify = (err) => {
                 v-model="password"
                 type="password"
                 label="Contraseña"
+                :rules="[val => !!val || 'Este campo es obligatorio']"
               >
                 <template v-slot:prepend>
                   <q-icon name="lock" />
