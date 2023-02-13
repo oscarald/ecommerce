@@ -1,27 +1,29 @@
 <script setup>
-import { ref } from "vue";
-import { api } from "src/boot/axios";
+import { ref, watch } from "vue";
 import logo from "src/assets/logo-sii-pi-verde.svg";
 import { useRouter, useRoute } from "vue-router";
 import { useQuasar } from "quasar";
+import { useAuthStore } from "src/stores/auth-store";
+const authStore = useAuthStore()
+
 const router = useRouter()
 const route = useRoute()
 const $q = useQuasar();
-const email = ref("");
-const password = ref("");
+const email = ref("admin@admin.com");
+const password = ref("123456");
 const err = ref("");
 const clean = () => {
   err.value = "";
 };
-const register = async () => {
-  try {
-    const user = await api.post("users/login", {
-      email: email.value,
-      password: password.value,
-    });
-    console.log(user.data.isAdmin);
-    welcome();
-    if(user.data.isAdmin){
+watch(() =>authStore.err, ()=>{
+  if(authStore.err){
+    errorNotify(authStore.err)
+  }
+})
+watch(() =>authStore.token, ()=>{
+  if(authStore.token){
+    welcome(authStore.user.name);
+    if(authStore.isAdmin){
       console.log("here")
       router.push({
       path: "/admin/",
@@ -30,17 +32,13 @@ const register = async () => {
       router.push({
         path: "/shop",
       });
-
     }
-  } catch (error) {
-    err.value = error.response?.data?.error;
-    console.log(error.response?.data?.error);
-    errorNotify(error.response?.data?.error);
   }
-};
-const welcome = () => {
+})
+
+const welcome = (name) => {
   $q.notify({
-    message: "Bienvenido",
+    message: `Bienvenido ${name}`,
     color: "secondary",
   });
 };
@@ -77,7 +75,7 @@ const errorNotify = (err) => {
               </div>
             </div>
           </q-card-section>
-          <q-form class="q-px-sm q-pt-xl" @submit="register">
+          <q-form class="q-px-sm q-pt-xl" @submit="authStore.login(email,password)">
             <q-card-section>
               <q-input
                 square

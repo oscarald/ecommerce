@@ -1,6 +1,8 @@
 import { route } from 'quasar/wrappers'
 import { createRouter, createMemoryHistory, createWebHistory, createWebHashHistory } from 'vue-router'
 import routes from './routes'
+import { useAuthStore } from "src/stores/auth-store";
+//const authStore = useAuthStore()
 
 /*
  * If not building with SSR mode, you can
@@ -11,7 +13,7 @@ import routes from './routes'
  * with the Router instance.
  */
 
-export default route(function (/* { store, ssrContext } */) {
+export default route(function ( {store}/* { store, ssrContext } */) {
   const createHistory = process.env.SERVER
     ? createMemoryHistory
     : (process.env.VUE_ROUTER_MODE === 'history' ? createWebHistory : createWebHashHistory)
@@ -24,6 +26,28 @@ export default route(function (/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> vueRouterMode
     // quasar.conf.js -> build -> publicPath
     history: createHistory(process.env.VUE_ROUTER_BASE)
+  })
+   Router.beforeEach((to, from, next) => {
+     const authStore = useAuthStore()
+    if(to.matched.some(route => route.meta.requiresAuth)){
+      if(!authStore.token){
+        next({path: '/login'})
+      } else {
+        if(to.matched.some(route => route.meta.requiresAdmin)){
+          if(!authStore.isAdmin){
+            console.log(authStore.isAdmin)
+            next({path: '/login'})
+          } else {
+            next()
+          }
+        } else{
+          next()
+        }
+      }
+    } else{
+      next()
+    }
+
   })
 
   return Router

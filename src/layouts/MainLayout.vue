@@ -1,10 +1,14 @@
 <template>
   <q-layout view="hhh lpR lFr">
-    <q-header elevated class="bg-accent text-secondary flex justify-around" style="min-height: 100px;">
+    <q-header
+      elevated
+      class="bg-accent text-secondary flex justify-around"
+      style="min-height: 100px"
+    >
       <q-item clickable to="/">
         <q-item-section avatar>
           <q-avatar size="75px">
-            <img src="src/assets/logo-sii-pi-verde.svg"/>
+            <img src="src/assets/logo-sii-pi-verde.svg" />
           </q-avatar>
         </q-item-section>
       </q-item>
@@ -12,17 +16,60 @@
         <q-route-tab to="/" label="Home" />
         <q-route-tab to="/shop" label="Tienda" />
         <q-route-tab to="/contact" label="Contacto" />
-        <q-route-tab to="/login" label="Login" />
-        <q-btn  color="secondary" icon="eva-heart-outline" @click="toggleLeftDrawer" />
-        <q-btn  class="q-ml-md" color="secondary" icon="eva-shopping-cart-outline" @click="toggleRightDrawer">
-          <q-badge v-if="shoppingCartStore.cart.length !== 0" color="red" floating>{{ shoppingCartStore.cart.length }}</q-badge>
+        <q-route-tab to="/login" label="Login" v-if="!authStore.token"/>
+
+        <q-btn-dropdown auto-close stretch flat label="cuenta" v-if="authStore.token">
+          <q-list>
+            <q-item clickable>
+              <q-item-section>
+                <q-btn flat no-caps to="/shop" label="Cerrar Sesión" @click="authStore.logout"/>
+              </q-item-section>
+            </q-item>
+
+            <q-item clickable>
+              <q-item-section>
+                <q-btn flat no-caps to="/checkout" label="Finalizar Compra" />
+              </q-item-section>
+            </q-item>
+
+            <q-item clickable>
+              <q-item-section>
+                <q-btn flat no-caps to="/order" label="Mis Pedidos" />
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-btn-dropdown>
+
+        <q-btn
+          color="secondary"
+          icon="eva-heart-outline"
+          @click="toggleLeftDrawer"
+        />
+        <q-btn
+          class="q-ml-md"
+          color="secondary"
+          icon="eva-shopping-cart-outline"
+          @click="toggleRightDrawer"
+        >
+          <q-badge
+            v-if="shoppingCartStore.cart.length !== 0"
+            color="red"
+            floating
+            >{{ shoppingCartStore.cart.length }}</q-badge
+          >
         </q-btn>
       </q-tabs>
     </q-header>
 
-    <q-drawer v-model="rightDrawerOpen" side="right" overlay bordered :width="450">
+    <q-drawer
+      v-model="rightDrawerOpen"
+      side="right"
+      overlay
+      bordered
+      :width="450"
+    >
       <!-- drawer content -->
-      <ShoppingCart/>
+      <ShoppingCart />
     </q-drawer>
 
     <q-drawer v-model="leftDrawerOpen" side="left" overlay bordered>
@@ -50,15 +97,17 @@
 import { ref } from "vue";
 import ShoppingCart from "src/components/ShoppingCart.vue";
 import { useShoppingStore } from "src/stores/shopping-cart-store";
-const shoppingCartStore = useShoppingStore()
+import { useAuthStore } from "src/stores/auth-store";
+const shoppingCartStore = useShoppingStore();
+const authStore = useAuthStore()
 
 export default {
   components: {
     ShoppingCart,
   },
   setup() {
-    const leftDrawerOpen = ref(false)
-    const rightDrawerOpen = ref(false)
+    const leftDrawerOpen = ref(false);
+    const rightDrawerOpen = ref(false);
 
     return {
       ShoppingCart,
@@ -67,10 +116,11 @@ export default {
         rightDrawerOpen.value = !rightDrawerOpen.value;
       },
       leftDrawerOpen,
-      toggleLeftDrawer () {
-        leftDrawerOpen.value = !leftDrawerOpen.value
+      toggleLeftDrawer() {
+        leftDrawerOpen.value = !leftDrawerOpen.value;
       },
-      shoppingCartStore
+      shoppingCartStore,
+      authStore
     };
   },
 };

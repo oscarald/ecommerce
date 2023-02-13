@@ -10,17 +10,48 @@ const routes = [
       { path: '/login', component: () => import('pages/LoginPage.vue') },
       { path: '/register', component: () => import('pages/RegisterPage.vue') },
       { path: '/forgot', component: () => import('pages/ForgotPage.vue') },
+      {
+        path: '/checkout',
+        component: () => import('pages/CheckoutPage.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: '/order',
+        component: () => import('pages/OrderPage.vue'),
+        meta: { requiresAuth: true }
+      },
     ]
   },
   {
     path: '/admin',
     component: () => import('layouts/AdminLayout.vue'),
+    meta: { requiresAuth: true },
     children: [
-      { path: '', component: () => import('src/admin/pages/DashboardPage.vue') },
-      { path: 'products', component: () => import('src/admin/pages/ProductsPage.vue') },
-      { path: 'category', component: () => import('src/admin/pages/CategoryPage.vue') },
-      { path: 'customers', component: () => import('src/admin/pages/CustomersPage.vue') },
-      { path: 'orders', component: () => import('src/admin/pages/OrdersPage.vue') },
+      {
+        path: '',
+        component: () => import('src/admin/pages/DashboardPage.vue'),
+        meta: { requiresAdmin: true }
+      },
+      {
+        path: 'products',
+        component: () => import('src/admin/pages/ProductsPage.vue'),
+        meta: { requiresAdmin: true }
+      },
+      {
+        path: 'category',
+        component: () => import('src/admin/pages/CategoryPage.vue'),
+        meta: { requiresAdmin: true }
+      },
+      {
+        path: 'customers',
+        component: () => import('src/admin/pages/CustomersPage.vue'),
+        meta: { requiresAdmin: true }
+      },
+      {
+        path: 'orders',
+        component: () => import('src/admin/pages/OrdersPage.vue'),
+        meta: { requiresAdmin: true }
+      },
 
     ]
   },

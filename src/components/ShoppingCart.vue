@@ -61,6 +61,7 @@ const shoppingCartStore = useShoppingStore()
         size="md"
         color="primary"
         label="Ir a Pagar"
+        to="/checkout"
       />
     </div>
   </div>
