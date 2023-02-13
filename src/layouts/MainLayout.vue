@@ -7,7 +7,7 @@
     >
       <q-btn clickable to="/" style="background: rgba(255,255,255,0.55);">
           <q-avatar rounded size="100px" >
-            <q-img src="src/assets/logo-sii-pi-verde.svg" style="max-width: 95%; max-height: 50px;" />
+            <q-img :src="logo" style="max-width: 95%; max-height: 50px;" />
           </q-avatar>
       </q-btn>
       <q-tabs>
@@ -119,7 +119,7 @@ export default {
       authStore,
       indexStore,
       Footer,
-
+      logo
     };
   },
 };
