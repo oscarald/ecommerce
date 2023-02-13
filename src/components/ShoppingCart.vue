@@ -1,11 +1,19 @@
 <script setup>
 import { useShoppingStore } from "src/stores/shopping-cart-store";
+import { useIndexStore } from "src/stores/index-store";
 const shoppingCartStore = useShoppingStore()
+const indexStore = useIndexStore()
 
 </script>
 
 <template>
-  <div class="text-h5 text-center q-py-md text-bold">Carrito de compras</div>
+  <div class="row">
+    <div class="text-h5 text-center q-py-md text-bold col-10">Carrito de compras</div>
+    <div class="col flex flex-center">
+      <q-btn flat round color="primary" icon="eva-close-outline" size="md" @click="indexStore.changeToogle()"/>
+    </div>
+  </div>
+
   <q-separator />
   <div style="height: 80%; overflow-x: hidden; overflow-y: scroll">
     <div class="text-h5 text-center text-bold" v-if="shoppingCartStore.cart.length == 0">No hay productos en el Carrito.</div>

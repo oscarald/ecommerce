@@ -4,6 +4,7 @@ export const useIndexStore = defineStore("inicio", {
   state: () => ({
     products: [],
     loading: false,
+    toogle: false
   }),
   getters: {},
   actions: {
@@ -17,6 +18,9 @@ export const useIndexStore = defineStore("inicio", {
       } catch (error) {
         console.log(error);
       }
+    },
+    async changeToogle() {
+      this.toogle = !this.toogle
     },
   },
 });

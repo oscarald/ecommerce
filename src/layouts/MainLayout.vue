@@ -5,14 +5,11 @@
       class="bg-accent text-secondary flex justify-around"
       style="min-height: 100px"
     >
-      <q-item clickable to="/">
-        <q-item-section >
-          <q-avatar rounded size="100px" style="background: rgba(255,255,255,0.6);">
+      <q-btn clickable to="/" style="background: rgba(255,255,255,0.55);">
+          <q-avatar rounded size="100px" >
             <q-img src="src/assets/logo-sii-pi-verde.svg" style="max-width: 95%; max-height: 50px;" />
           </q-avatar>
-        </q-item-section>
-
-      </q-item>
+      </q-btn>
       <q-tabs>
         <q-route-tab to="/" label="Home" />
         <q-route-tab to="/shop" label="Tienda" />
@@ -50,7 +47,7 @@
           class="q-ml-md"
           color="secondary"
           icon="eva-shopping-cart-outline"
-          @click="toggleRightDrawer"
+          @click="indexStore.changeToogle()"
         >
           <q-badge
             v-if="shoppingCartStore.cart.length !== 0"
@@ -63,7 +60,7 @@
     </q-header>
 
     <q-drawer
-      v-model="rightDrawerOpen"
+      v-model="indexStore.toogle"
       side="right"
       overlay
       bordered
@@ -93,9 +90,11 @@ import ShoppingCart from "src/components/ShoppingCart.vue";
 import Footer from "src/components/Footer.vue"
 import { useShoppingStore } from "src/stores/shopping-cart-store";
 import { useAuthStore } from "src/stores/auth-store";
+import { useIndexStore } from "src/stores/index-store";
 import logo from "src/assets/logo-sii-pi-verde.svg";
 const shoppingCartStore = useShoppingStore();
 const authStore = useAuthStore()
+const indexStore = useIndexStore()
 
 export default {
   components: {
@@ -118,6 +117,7 @@ export default {
       },
       shoppingCartStore,
       authStore,
+      indexStore,
       Footer,
 
     };
