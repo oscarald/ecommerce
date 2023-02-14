@@ -1,7 +1,7 @@
 <template>
-  <q-layout view="hhh lpR lFr">
+  <q-layout view="lhh lpR lfr">
     <q-header
-      elevated
+      reveal elevated
       class="bg-accent text-secondary flex justify-around"
       style="min-height: 100px"
     >
@@ -78,8 +78,8 @@
       <router-view />
     </q-page-container>
 
-    <q-footer reveal elevated class="bg-blue-grey-10 text-white">
-      <Footer />
+    <q-footer  class="bg-blue-grey-10 text-white">
+      <Footer></Footer>
     </q-footer>
   </q-layout>
 </template>

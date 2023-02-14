@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHr LpR lFr">
+  <q-layout view="hHr LpR lfr">
     <q-header bordered class="bg-primary text-white">
       <q-toolbar>
         <q-btn dense flat round icon="menu" @click="toggleLeftDrawer" />
