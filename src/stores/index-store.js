@@ -4,6 +4,7 @@ export const useIndexStore = defineStore("inicio", {
   state: () => ({
     products: [],
     categories: [],
+    singleProduct: {},
     loading: false,
     loadingcat:false,
     toogle: false,
@@ -35,6 +36,17 @@ export const useIndexStore = defineStore("inicio", {
         console.log(error);
       }
     },
+    async getSingleProduct(id) {
+      try {
+        this.loading = true;
+        const prod = await api.get(`products/${id}`);
+        this.singleProduct = prod.data;
+        this.loading = false;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
     async changeToogle() {
       this.toogle = !this.toogle
     },

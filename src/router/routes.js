@@ -10,6 +10,7 @@ const routes = [
       { path: '/login', component: () => import('pages/LoginPage.vue') },
       { path: '/register', component: () => import('pages/RegisterPage.vue') },
       { path: '/forgot', component: () => import('pages/ForgotPage.vue') },
+      { path: '/single/:id', name: 'single' , component: () => import('pages/SingleProductPage.vue') },
       {
         path: '/checkout',
         component: () => import('pages/CheckoutPage.vue'),
