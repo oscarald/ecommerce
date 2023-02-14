@@ -11,7 +11,7 @@ export const useIndexStore = defineStore("inicio", {
   }),
   getters: {},
   actions: {
-    async getIndexProducts(id="63e9cb33c100212960a99584", name = this.namecat) {
+    async getIndexProducts(id="63eaf641ec98cdd80530042d", name = this.namecat) {
       try {
         this.loading = true;
         this.namecat = name
