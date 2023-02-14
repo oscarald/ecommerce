@@ -9,7 +9,7 @@ const authStore = useAuthStore()
 const router = useRouter()
 const route = useRoute()
 const $q = useQuasar();
-const email = ref("admin@admin.com");
+const email = ref("billy@billy.com");
 const password = ref("123456");
 const err = ref("");
 const clean = () => {
