@@ -14,7 +14,7 @@ onMounted(() => {
   <div
     v-for="prod in indexStore.products"
     :key="prod.id"
-    class="col-12 col-sm-6 col-md-3 flex justify-center q-px-sm"
+    class="col-6 col-md-4 col-lg-3 flex justify-center q-px-sm"
   >
     <Product :prod="prod" />
   </div>

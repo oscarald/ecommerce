@@ -21,6 +21,7 @@ export const useShopStore = defineStore('shop', {
     async getProducts(page=1) {
       try {
         this.loading = true;
+        this.products = []
         const prod = await api.get(`products?page=${page}&limit=${this.limitPage}`);
         this.products = prod.data.docs;
         this.actualPage = prod.data.page
@@ -36,6 +37,7 @@ export const useShopStore = defineStore('shop', {
     async filterByCategory(page=1) {
       try {
         this.loading = true;
+        this.products = []
         const prod = await api.get(`products?page=${page}&limit=${this.limitPage}&category=${this.idCategory}`);
         this.products = prod.data.docs;
         this.actualPage = prod.data.page
@@ -52,6 +54,7 @@ export const useShopStore = defineStore('shop', {
     async filterByRate(page=1) {
       try {
         this.loading = true;
+        this.products = []
         const prod = await api.get(`products/rate?page=${page}&limit=${this.limitPage}&order=desc`);
         this.products = prod.data.docs;
         this.actualPage = prod.data.page
@@ -69,6 +72,7 @@ export const useShopStore = defineStore('shop', {
 
       try {
         this.loading = true;
+        this.products = []
         const prod = await api.get(`products/price?page=${page}&limit=${this.limitPage}&order=${price}`);
         this.products = prod.data.docs;
         this.actualPage = prod.data.page
@@ -85,6 +89,7 @@ export const useShopStore = defineStore('shop', {
     async filterByDate(page=1) {
       try {
         this.loading = true;
+        this.products = []
         const prod = await api.get(`products/date?page=${page}&limit=${this.limitPage}&order=desc`);
         this.products = prod.data.docs;
         this.actualPage = prod.data.page
@@ -101,6 +106,7 @@ export const useShopStore = defineStore('shop', {
     async filterBetweenPrice(page=1,min,max) {
       try {
         this.loading = true;
+        this.products = []
         const prod = await api.get(`products/between?page=${page}&limit=${this.limitPage}&min=${min}&max=${max}`);
         this.products = prod.data.docs;
         this.actualPage = prod.data.page
@@ -117,6 +123,7 @@ export const useShopStore = defineStore('shop', {
     async searchProduct(page=1,search) {
       try {
         this.loading = true;
+        this.products = []
         const prod = await api.get(`products/search?page=${page}&limit=${this.limitPage}&search=${search}`);
         this.products = prod.data.docs;
         this.actualPage = prod.data.page

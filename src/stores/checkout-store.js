@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia';
 import { api } from "src/boot/axios";
+import { useShoppingStore } from "src/stores/shopping-cart-store";
+const shoppingStore = useShoppingStore();
 
 export const useCheckoutStore = defineStore('checkout', {
   state: () => ({
@@ -17,6 +19,7 @@ export const useCheckoutStore = defineStore('checkout', {
           amount,
           id
         });
+        shoppingStore.resetCart()
         console.log(sales)
       } catch (error) {
         console.log(error)

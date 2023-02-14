@@ -34,7 +34,7 @@ const showNotif = () => {
           </div>
         </div>
         <div class=" row justify-center">
-          <q-rating v-model="props.prod.rate" :max="5" size="32px" />
+          <q-rating v-model="props.prod.rate" :max="5" size="32px" disable/>
         </div>
       </q-card-section>
 
@@ -54,7 +54,7 @@ const showNotif = () => {
 <style scoped>
 .my-card{
   width: 100%;
-  max-width: 300px;
+  max-width: 350px;
 }
 
 </style>

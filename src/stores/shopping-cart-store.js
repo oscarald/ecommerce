@@ -37,6 +37,9 @@ export const useShoppingStore = defineStore('shopping', {
       const prod = this.cart.filter(p => product._id !== p._id)
       this.cart = prod
       this.total = this.total - deleteprod[0].price*deleteprod[0].quantity
+    },
+    resetCart() {
+      this.cart = []
     }
   },
 });

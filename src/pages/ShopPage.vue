@@ -29,10 +29,10 @@ const onRequest = (page) => {
       shopStore.filterByDate(page);
       break;
     case "between":
-      shopStore.filterBetweenPrice(page,price.value.min,price.value.max);
+      shopStore.filterBetweenPrice(page, price.value.min, price.value.max);
       break;
     case "search":
-      shopStore.searchProduct(page,search.value);
+      shopStore.searchProduct(page, search.value);
       break;
   }
 };
@@ -69,15 +69,15 @@ const orderByDate = () => {
   shopStore.filterByDate();
 };
 
-const BetweenPrice = (min,max) => {
+const BetweenPrice = (min, max) => {
   shopStore.changeFilter("between");
-  shopStore.filterBetweenPrice(1,min,max);
-}
+  shopStore.filterBetweenPrice(1, min, max);
+};
 
 const filterBySearch = (search) => {
   shopStore.changeFilter("search");
   shopStore.searchProduct(1, search);
-}
+};
 
 onMounted(() => {
   shopStore.getProducts();
@@ -87,8 +87,8 @@ onMounted(() => {
 
 <template>
   <div class="row q-px-xl">
-    <div class="col-3">
-      <div class="bg-blue-grey-1 q-pa-xl q-mt-md" style="width: 20rem">
+    <div class="col-12 col-sm-3 justify-center">
+      <div class="bg-blue-grey-1 q-pa-md q-mt-md" style="width: 18rem">
         <p class="text-h6">SELECCIONE EL PRECIO</p>
 
         <div style="max-width: 10em" class="">
@@ -96,10 +96,14 @@ onMounted(() => {
           <div class="text-subtitle1 text-bold">
             Precio: {{ price.min }} - {{ price.max }} Bs.
           </div>
-          <q-btn color="primary" label="Filtrar" @click="BetweenPrice(price.min,price.max)"/>
+          <q-btn
+            color="primary"
+            label="Filtrar"
+            @click="BetweenPrice(price.min, price.max)"
+          />
         </div>
       </div>
-      <div class="bg-blue-grey-1 q-pa-xl q-mt-md" style="width: 20rem">
+      <div class="bg-blue-grey-1 q-py-md q-px-md q-mt-md" style="width: 18rem">
         <p class="text-h6">CATEGORÍAS</p>
 
         <div class="column items-start">
@@ -127,12 +131,17 @@ onMounted(() => {
         </div>
       </div>
     </div>
-    <div class="col">
-      <div class="row justify-end md:justify-center">
+    <div class="col-12 col-sm">
+      <div class="row justify-center sm:justify-end">
         <div style="max-width: 20rem" class="q-mt-md bg-blue-grey-1 q-px-md">
           <q-input v-model="search" label="Buscar Producto">
             <template v-slot:after>
-              <q-btn round flat icon="eva-search-outline" @click="filterBySearch(search)"/>
+              <q-btn
+                round
+                flat
+                icon="eva-search-outline"
+                @click="filterBySearch(search)"
+              />
             </template>
           </q-input>
         </div>
@@ -174,17 +183,26 @@ onMounted(() => {
         </div>
       </div>
       <div class="row">
+        <div style="width: 100%;">
+          <p class="flex flex-center" v-if="shopStore.loading">
+          <q-spinner-orbit color="primary" size="4em" />
+        </p>
+        </div>
+
         <div
-          v-if="shopStore.products.length > 0"
+          v-if="!shopStore.loading && shopStore.products.length == 0"
+          class="col-12 flex justify-center"
+        >
+          <p class="text-h3">No hay Productos</p>
+        </div>
+        <div
           v-for="prod in shopStore.products"
           :key="prod.id"
           class="col-12 col-sm-6 col-md-4 q-pa-lg flex justify-center"
         >
           <Product :prod="prod" />
         </div>
-        <div v-else class="col-12 flex justify-center">
-          <p class="text-h3">No hay Productos</p>
-        </div>
+
         <div
           class="q-pa-lg flex flex-center col-12"
           v-if="shopStore.products.length > 0"
